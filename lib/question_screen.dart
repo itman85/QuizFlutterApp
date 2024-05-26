@@ -11,9 +11,18 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+  var currentQuestionIndex = 0;
+
+  void answerQuestion() {
+    // update widget state every time this function called
+    setState(() {
+      currentQuestionIndex += 1; // or ++
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final currentQuestion = questions[0];
+    final currentQuestion = questions[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity, // infinity: use as much width as it can
@@ -32,8 +41,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
               height: 30,
             ),
             // spreding values (...) add a list as multiple individual values into the container list
-            ...currentQuestion.answers.map((item) {
-              return AnswerButton(answerText: item, onTap: () {});
+            ...currentQuestion.getShuffledAnswer().map((item) {
+              return AnswerButton(answerText: item, onTap: answerQuestion);
             })
           ],
         ),
