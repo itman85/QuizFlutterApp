@@ -4,7 +4,10 @@ import 'package:quizflutterapp/data/questions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({super.key});
+  const QuestionScreen({super.key, required this.onSelectAnswer});
+
+  final void Function(String answer) onSelectAnswer;
+
   @override
   State<QuestionScreen> createState() {
     return _QuestionScreenState();
@@ -14,7 +17,8 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   var currentQuestionIndex = 0;
 
-  void answerQuestion() {
+  void answerQuestion(String selectedAnswer) {
+    widget.onSelectAnswer(selectedAnswer);
     // update widget state every time this function called
     setState(() {
       currentQuestionIndex += 1; // or ++
@@ -45,8 +49,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
               height: 30,
             ),
             // spreding values (...) add a list as multiple individual values into the container list
-            ...currentQuestion.getShuffledAnswer().map((item) {
-              return AnswerButton(answerText: item, onTap: answerQuestion);
+            ...currentQuestion.getShuffledAnswer().map((answer) {
+              return AnswerButton(
+                  answerText: answer,
+                  onTap: () {
+                    answerQuestion(answer);
+                  });
             })
           ],
         ),
