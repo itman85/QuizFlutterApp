@@ -49,7 +49,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               height: 30,
             ),
             // spreding values (...) add a list as multiple individual values into the container list
-            ...currentQuestion.getShuffledAnswer().map((answer) {
+            ...currentQuestion.shuffledAnswer.map((answer) {
               return AnswerButton(
                   answerText: answer,
                   onTap: () {

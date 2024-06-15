@@ -15,34 +15,43 @@ class Quiz extends StatefulWidget {
 
 // underscore makes this class be private
 class _QuizState extends State<Quiz> {
-  List<String> selectedAnswers = [];
-  var activeScreen = "start-screen";
+  final List<String> _selectedAnswers = [];
+  var _activeScreen = "start-screen";
 
   void switchScreen() {
     setState(() {
-      activeScreen = 'question-screen';
+      _activeScreen = 'question-screen';
     });
   }
 
   void chooseAnswer(String answer) {
-    selectedAnswers.add(answer);
-    if (selectedAnswers.length == questions.length) {
+    _selectedAnswers.add(answer);
+    if (_selectedAnswers.length == questions.length) {
       setState(() {
-        activeScreen = 'results-screen';
+        _activeScreen = 'results-screen';
       });
     }
+  }
+
+  void restartQuiz() {
+    setState(() {
+      _activeScreen = 'questions-screen';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Widget screenWidget = StartScreen(switchScreen);
 
-    if (activeScreen == 'question-screen') {
+    if (_activeScreen == 'question-screen') {
       screenWidget = QuestionScreen(
         onSelectAnswer: chooseAnswer,
       );
-    } else if (activeScreen == 'results-screen') {
-      screenWidget = ResultsScreen(chosenAnswers: selectedAnswers);
+    } else if (_activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(
+        chosenAnswers: _selectedAnswers,
+        onRestart: restartQuiz,
+      );
     }
     return MaterialApp(
         home: Scaffold(
